@@ -45,6 +45,9 @@ export PATH="$HOME/projects/specsavers/emea/dev-docker/bin:$PATH"
 export PATH="$HOME/projects/specsavers/emea/webapp-tooling/scripts/helper:$PATH"
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
+# Windows apps
+export PATH="/mnt/c/Program Files/Microsoft VS Code/bin:$PATH"
+
 # Custom functions
 mkcd () {
   mkdir "$1"
@@ -60,3 +63,5 @@ export AWS_VAULT_PASS_PREFIX=aws-vault
 export GPG_TTY=$(tty)
 
 alias ls="logo-ls"
+alias cat="batcat"
+alias cata="batcat -A"
