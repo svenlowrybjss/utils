@@ -37,11 +37,14 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-eval "$(oh-my-posh init zsh --config https://raw.githubusercontent.com/svenlowrybjss/utils/master/configs/oh-my-posh/omp.json)"
+eval "$(oh-my-posh init zsh --config https://raw.githubusercontent.com/SiJiL82/utils/main/configs/oh-my-posh/omp.json)"
+
+# Load SSH key
+# /usr/bin/keychain -q --nogui $HOME/.ssh/id_rsa
+# source $HOME/.keychain/$HOST-sh
 
 # Helper scripts
 source ~/aws/aws_helper.sh
-export PATH="$HOME/projects/specsavers/emea/dev-docker/bin:$PATH"
 export PATH="$HOME/projects/specsavers/emea/webapp-tooling/scripts/helper:$PATH"
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
@@ -54,6 +57,26 @@ mkcd () {
   cd "$1"
 }
 
+ucd () {
+  cdto=".."
+  for ((i=1; i<$1; i++)); do
+    cdto="${cdto}/.."
+  done
+  if [ ! -z "$2" ]; then
+    cdto="${cdto}/${2}"
+  fi
+  cd "$cdto"
+}
+
+gclonecd() {
+  git clone "$1" && cd "$(basename "$1" .git)"
+}
+
+qa-ssh () {
+  aws_auth_mfa
+  borls-ssm -g qa -e "$1" -t "$2" -s webapp
+}
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -62,6 +85,6 @@ export AWS_VAULT_BACKEND=pass
 export AWS_VAULT_PASS_PREFIX=aws-vault
 export GPG_TTY=$(tty)
 
-alias ls="logo-ls"
+# alias ls="logo-ls"
 alias cat="batcat"
 alias cata="batcat -A"
