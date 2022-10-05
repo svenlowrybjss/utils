@@ -1,3 +1,0 @@
-git config --global alias.last 'log -1 HEAD'
-git config --global alias.empty 'commit --allow-empty -m "Empty commit"'
-git config --global alias.undo 'reset --soft HEAD~1'

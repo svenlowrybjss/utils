@@ -1,0 +1,14 @@
+[user]
+	name = Sven Lowry
+	email = sven.lowry@bjss.com
+[credential]
+	helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager-core.exe
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[alias]
+	last = log -1 HEAD
+	empty = commit --allow-empty -m \"Empty commit\"
+	undo = reset --soft HEAD~1
+	switchoc = "!f() { git switch $1 2>/dev/null || git switch -c $1; }; f"
+[push]
+	autoSetupRemote = true
