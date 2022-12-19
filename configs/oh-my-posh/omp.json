@@ -20,6 +20,16 @@
             "type": "os"
           },
           {
+            "type": "time",
+            "style": "powerline",
+            "powerline_symbol": "\ue0b0",
+            "foreground": "#100e23",
+            "background": "#9e9e9a",
+            "properties": {
+              "time_format": "15:04"
+            }
+          },
+          {
             "background_templates": [
               "{{ if eq .OS \"ubuntu\" }}#ec9706{{ end }}",
               "{{ if eq .OS \"windows\" }}#0079D8{{ end }}",
