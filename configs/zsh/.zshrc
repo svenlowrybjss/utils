@@ -1,53 +1,45 @@
-# Set up the prompt
-
-source ~/zshmodules/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-skip_global_compinit=1
-
-autoload -Uz promptinit
-promptinit
-prompt adam1
-
-setopt histignorealldups sharehistory
-
-# Use emacs keybindings even if our EDITOR is set to vi
-bindkey -e
-
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+zstyle ':znap:*' repos-dir ~/zsh
+source ~/zsh-snap/znap.zsh
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-HISTFILE=~/.zsh_history
+unsetopt beep
+bindkey -e
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/sven/.zshrc'
 
-# Use modern completion system
 # autoload -Uz compinit
 # compinit
+# Download Znap, if it's not there yet.
+[[ -f ~/Git/zsh-snap/znap.zsh ]] ||
+    git clone --depth 1 -- \
+        https://github.com/marlonrichert/zsh-snap.git ~/Git/zsh-snap
 
-# zstyle ':completion:*' auto-description 'specify: %d'
-# zstyle ':completion:*' completer _expand _complete _correct _approximate
-# zstyle ':completion:*' format 'Completing %d'
-# zstyle ':completion:*' group-name ''
-# zstyle ':completion:*' menu select
-# eval "$(dircolors -b)"
-# zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-# zstyle ':completion:*' list-colors ''
-# zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-# zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-# zstyle ':completion:*' menu select=long
-# zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-# zstyle ':completion:*' use-compctl false
-# zstyle ':completion:*' verbose true
+source ~/Git/zsh-snap/znap.zsh  # Start Znap
 
-# zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-# zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+# `znap prompt` makes your prompt visible in just 15-40ms!
+# znap prompt sindresorhus/pure
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-eval "$(oh-my-posh init zsh --config /home/svenlowry/projects/personal/utils/configs/oh-my-posh/omp.json)"
+# `znap source` automatically downloads and starts your plugins.
+znap source marlonrichert/zsh-autocomplete
+znap source zsh-users/zsh-autosuggestions
+znap source zsh-users/zsh-syntax-highlighting
 
-# Helper scripts
+# `znap eval` caches and runs any kind of command output for you.
+znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
+
+# `znap function` lets you lazy-load features you don't always need.
+znap function _pyenv pyenv 'eval "$( pyenv init - --no-rehash )"'
+compctl -K    _pyenv pyenv
+# End of lines added by compinstall
+eval "$(oh-my-posh init zsh --config /home/sven/projects/personal/utils/configs/oh-my-posh/omp.json)"
+
+# PATH additions
 export PATH="$HOME/projects/specsavers/emea/webapp-tooling/scripts/helper:$PATH"
-export PATH="$HOME/.config/composer/vendor/bin:$PATH"
-
-# Windows apps
 export PATH="/mnt/c/Program Files/Microsoft VS Code/bin:$PATH"
+fpath=(/home/sven/projects/specsavers/emea/dev-docker/bin/autocomplete $fpath)
 
 # Custom functions
 mkcd () {
@@ -80,29 +72,22 @@ cloneopen() {
   git clone "$1" && cd "$(basename "$1" .git)" && code .
 }
 
-qa-ssh () {
-  aws-vault exec specsaversbrand
-  borls-ssm -g qa -e "$1" -t "$2" -s webapp
+mainmerge() {
+  MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+  BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  git checkout "$MAIN_BRANCH"
+  git fetch
+  git pull
+  git checkout "$BRANCH_NAME"
+  git merge "$MAIN_BRANCH"
 }
 
-# exit () {
-#   if [[ $SHLVL -eq 1 ]]; then
-#     printf '%s\n' "Don't quit the primary shell!" >&2
-#   else
-#     command exit
-#   fi
-# }
+docker_nuke() {
+  docker system prune -a --volumes
+}
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export AWS_VAULT_BACKEND=pass
-export AWS_VAULT_PASS_PREFIX=aws-vault
-export GPG_TTY=$(tty)
-
-# alias ls="logo-ls"
-# alias ls="exa --icons"
+# Aliases
 alias cat="batcat"
 alias cata="batcat -A"
-alias aws-auth="aws-vault exec specsaversbrand"
+
+eval $(thefuck --alias)
