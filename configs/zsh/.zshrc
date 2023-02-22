@@ -74,11 +74,9 @@ cloneopen() {
 
 mainmerge() {
   MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
-  BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
   git checkout "$MAIN_BRANCH"
-  git fetch
   git pull
-  git checkout "$BRANCH_NAME"
+  git checkout -
   git merge "$MAIN_BRANCH"
 }
 
@@ -89,5 +87,6 @@ docker_nuke() {
 # Aliases
 alias cat="batcat"
 alias cata="batcat -A"
+alias awsauth="aws-vault exec specsaversbrand --backend=file"
 
 eval $(thefuck --alias)
