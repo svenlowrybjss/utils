@@ -66,6 +66,18 @@
             "style": "powerline",
             "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uf692 {{ .StashCount }}{{ end }} ",
             "type": "git"
+          },
+          {
+            "type": "command",
+            "foreground": "#000000",
+            "background": "#cfcfc4",
+            "style": "powerline",
+            "powerline_symbol": "\ue0b0",
+            "properties": {
+              "shell": "zsh",
+              "command": "[[ ! -z ${AWS_VAULT+z} ]] && echo \"$SHLVL\" || echo 0"
+            },
+            "template": "{{ if ( gt (.Output | int) 0 ) }}\u2800\ue683\u2800{{ end }}"
           }
         ],
         "type": "prompt"
