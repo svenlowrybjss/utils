@@ -38,8 +38,13 @@ eval "$(oh-my-posh init zsh --config /home/sven/projects/personal/utils/configs/
 
 # PATH additions
 export PATH="$HOME/projects/specsavers/emea/webapp-tooling/scripts/helper:$PATH"
-export PATH="/mnt/c/Program Files/Microsoft VS Code/bin:$PATH"
+export PATH="/mnt/c/Users/sven.lowry/AppData/Local/Programs/Microsoft VS Code/bin:$PATH"
 fpath=(/home/sven/projects/specsavers/emea/dev-docker/bin/autocomplete $fpath)
+fpath=(/home/sven/projects/specsavers/ca/php-canada_drupal9_ecomm/bin/autocomplete $fpath)
+JAVA_HOME='/opt/jdk-20.0.1'
+export PATH="$JAVA_HOME/bin:$PATH"
+M2_HOME='/opt/apache-maven-3.9.2'
+export PATH="$M2_HOME/bin:$PATH"
 
 # Custom functions
 mkcd () {
@@ -73,20 +78,36 @@ cloneopen() {
 }
 
 mainmerge() {
+    BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    gitmain
+    git checkout "$BRANCH_NAME"
+    git merge "$MAIN_BRANCH"
+}
+
+gitmain() {
   MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
   git checkout "$MAIN_BRANCH"
   git pull
-  git checkout -
-  git merge "$MAIN_BRANCH"
 }
 
-docker_nuke() {
-  docker system prune -a --volumes
+load_pageant() {
+  weaselpath="/mnt/c/Program Files/KeePass Password Safe 2/weasel-pageant"
+  echo -n "Pageant loading, wait..."
+  "$weaselpath/weasel-pageant" -k> /dev/null 2> /dev/null
+  eval $("$weaselpath/weasel-pageant" -r -a "/tmp/.weasel-pageant-$USER")> /dev/null 2> /dev/null
+  sleep 1
+  sshkeysloaded=$(ssh-add -l | grep -c SHA)
+  if [[ $sshkeysloaded -gt 0 ]];  then
+      echo -e "Loaded $sshkeysloaded keys."
+  else
+      echo -e "Failed to load any keys."
+  fi
 }
 
 # Aliases
 alias cat="batcat"
 alias cata="batcat -A"
-alias awsauth="aws-vault exec specsaversbrand --backend=file"
-
+alias drop_cache="sudo sh -c \"echo 3 >'/proc/sys/vm/drop_caches' && swapoff -a && swapon -a && printf '\n%s\n' 'Ram-cache and Swap Cleared'\""
+alias docker_nuke="docker system prune -a --volumes -f"
 eval $(thefuck --alias)
+eval "$(atuin init zsh)"
