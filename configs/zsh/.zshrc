@@ -46,6 +46,9 @@ export PATH="$JAVA_HOME/bin:$PATH"
 M2_HOME='/opt/apache-maven-3.9.2'
 export PATH="$M2_HOME/bin:$PATH"
 
+# Environment Variables
+AWS_VAULT_BACKEND=pass
+
 # Custom functions
 mkcd () {
   mkdir "$1"
@@ -111,3 +114,7 @@ alias drop_cache="sudo sh -c \"echo 3 >'/proc/sys/vm/drop_caches' && swapoff -a 
 alias docker_nuke="docker system prune -a --volumes -f"
 eval $(thefuck --alias)
 eval "$(atuin init zsh)"
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
