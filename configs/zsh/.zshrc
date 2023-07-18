@@ -47,7 +47,7 @@ M2_HOME='/opt/apache-maven-3.9.2'
 export PATH="$M2_HOME/bin:$PATH"
 
 # Environment Variables
-AWS_VAULT_BACKEND=pass
+export AWS_VAULT_BACKEND=pass
 
 # Custom functions
 mkcd () {
