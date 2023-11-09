@@ -1,4 +1,4 @@
-oh-my-posh --init --shell pwsh --config 'https://raw.githubusercontent.com/svenlowrybjss/utils/master/configs/oh-my-posh/omp.json' | Invoke-Expression
+oh-my-posh --init --shell pwsh --config '\\wsl$\Ubuntu-20.04\home\sven\projects\personal\utils\configs\oh-my-posh\omp.json' | Invoke-Expression
 
 # Terminal Icons
 if (-Not (Get-Module -ListAvailable -Name "Terminal-Icons")) {
@@ -14,5 +14,7 @@ Import-Module PSReadLine
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -EditMode Windows
+
+wsl.exe -d wsl-vpnkit service wsl-vpnkit start
 
 Clear-Host

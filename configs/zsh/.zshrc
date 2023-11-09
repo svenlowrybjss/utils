@@ -48,6 +48,7 @@ export PATH="$M2_HOME/bin:$PATH"
 
 # Environment Variables
 export AWS_VAULT_BACKEND=pass
+export OPENAI_KEY=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
 
 # Custom functions
 mkcd () {
@@ -81,10 +82,10 @@ cloneopen() {
 }
 
 mainmerge() {
-    BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    gitmain
-    git checkout "$BRANCH_NAME"
-    git merge "$MAIN_BRANCH"
+  BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  gitmain
+  git checkout "$BRANCH_NAME"
+  git merge "$MAIN_BRANCH"
 }
 
 gitmain() {
@@ -112,9 +113,17 @@ alias cat="batcat"
 alias cata="batcat -A"
 alias drop_cache="sudo sh -c \"echo 3 >'/proc/sys/vm/drop_caches' && swapoff -a && swapon -a && printf '\n%s\n' 'Ram-cache and Swap Cleared'\""
 alias docker_nuke="docker system prune -a --volumes -f"
-eval $(thefuck --alias)
+eval "$(thefuck --alias)"
 eval "$(atuin init zsh)"
 
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# Run tasks
+docker-compose -f /home/sven/projects/misc/ittools/docker-compose.yml pull &>/dev/null
+docker-compose -f /home/sven/projects/misc/ittools/docker-compose.yml up -d &>/dev/null
+clear
