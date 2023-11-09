@@ -48,7 +48,6 @@ export PATH="$M2_HOME/bin:$PATH"
 
 # Environment Variables
 export AWS_VAULT_BACKEND=pass
-export OPENAI_KEY=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
 
 # Custom functions
 mkcd () {
