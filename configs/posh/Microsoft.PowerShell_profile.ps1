@@ -1,4 +1,4 @@
-oh-my-posh --init --shell pwsh --config '\\wsl$\Ubuntu-20.04\home\sven\projects\personal\utils\configs\oh-my-posh\omp.json' | Invoke-Expression
+oh-my-posh --init --shell pwsh --config '\\wsl$\Ubuntu-22.04\home\sven\projects\personal\utils\configs\oh-my-posh\omp.json' | Invoke-Expression
 
 # Terminal Icons
 if (-Not (Get-Module -ListAvailable -Name "Terminal-Icons")) {
