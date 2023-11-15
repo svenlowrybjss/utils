@@ -40,7 +40,7 @@
             "properties": {
               "folder_icon": "\uf115",
               "folder_separator_icon": "\u2800\ue0b1\u2800\ue5ff\u2800",
-              "home_icon": "\uf7db",
+              "home_icon": "\uf015", 
               "max_depth": 1,
               "style": "agnoster_short"
             },
