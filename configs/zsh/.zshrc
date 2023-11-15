@@ -34,13 +34,14 @@ znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
 znap function _pyenv pyenv 'eval "$( pyenv init - --no-rehash )"'
 compctl -K    _pyenv pyenv
 # End of lines added by compinstall
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(oh-my-posh init zsh --config /home/sven/projects/personal/utils/configs/oh-my-posh/omp.json)"
 
 # PATH additions
 export PATH="$HOME/projects/specsavers/emea/webapp-tooling/scripts/helper:$PATH"
 export PATH="/mnt/c/Users/sven.lowry/AppData/Local/Programs/Microsoft VS Code/bin:$PATH"
 fpath=(/home/sven/projects/specsavers/emea/dev-docker/bin/autocomplete $fpath)
-fpath=(/home/sven/projects/specsavers/ca/php-canada_drupal9_ecomm/bin/autocomplete $fpath)
+# fpath=(/home/sven/projects/specsavers/ca/php-canada_drupal9_ecomm/bin/autocomplete $fpath)
 JAVA_HOME='/opt/jdk-20.0.1'
 export PATH="$JAVA_HOME/bin:$PATH"
 M2_HOME='/opt/apache-maven-3.9.2'
@@ -93,20 +94,6 @@ gitmain() {
   git pull
 }
 
-load_pageant() {
-  weaselpath="/mnt/c/Program Files/KeePass Password Safe 2/weasel-pageant"
-  echo -n "Pageant loading, wait..."
-  "$weaselpath/weasel-pageant" -k> /dev/null 2> /dev/null
-  eval $("$weaselpath/weasel-pageant" -r -a "/tmp/.weasel-pageant-$USER")> /dev/null 2> /dev/null
-  sleep 1
-  sshkeysloaded=$(ssh-add -l | grep -c SHA)
-  if [[ $sshkeysloaded -gt 0 ]];  then
-      echo -e "Loaded $sshkeysloaded keys."
-  else
-      echo -e "Failed to load any keys."
-  fi
-}
-
 # Aliases
 alias cat="batcat"
 alias cata="batcat -A"
@@ -125,4 +112,4 @@ export PATH="$PATH:$HOME/.rvm/bin"
 # Run tasks
 docker-compose -f /home/sven/projects/misc/ittools/docker-compose.yml pull &>/dev/null
 docker-compose -f /home/sven/projects/misc/ittools/docker-compose.yml up -d &>/dev/null
-clear
+# clear
